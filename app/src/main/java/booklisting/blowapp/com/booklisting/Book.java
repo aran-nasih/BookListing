@@ -5,43 +5,43 @@ package booklisting.blowapp.com.booklisting;
  */
 
 public class Book {
-    private String mThumbnail;
-    private String mTitle;
-    private String mAuthor;
-    private String mDate;
-    private String mDescription;
-    private String mUrl;
+    private String thumbnail;
+    private String title;
+    private String author;
+    private String date;
+    private String description;
+    private String url;
 
-    public Book(String mThumbnail, String mTitle, String mAuthor, String mDate, String mDescription, String url) {
-        this.mThumbnail = mThumbnail;
-        this.mTitle = mTitle;
-        this.mAuthor = mAuthor;
-        this.mDate = mDate;
-        this.mDescription = mDescription;
-        this.mUrl = url;
+    public Book(String thumbnail, String title, String author, String date, String description, String url) {
+        this.thumbnail = thumbnail;
+        this.title = title;
+        this.author = author;
+        this.date = date;
+        this.description = description;
+        this.url = url;
     }
 
     public String getmThumbnail() {
-        return mThumbnail;
+        return thumbnail;
     }
 
     public String getmTitle() {
-        return mTitle;
+        return title;
     }
 
     public String getmAuthor() {
-        return mAuthor;
+        return author;
     }
 
     public String getmDate() {
-        return mDate;
+        return date;
     }
 
     public String getmDescription() {
-        return mDescription;
+        return description;
     }
 
     public String getmUrl() {
-        return this.mUrl;
+        return this.url;
     }
 }

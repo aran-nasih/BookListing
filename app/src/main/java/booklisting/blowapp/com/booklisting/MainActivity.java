@@ -32,26 +32,28 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     ProgressBar progressBar;
 
     private BookAdapter bookAdapter;
-    private static int BOOK_LOADER_ID = 0;
+    private static int BOOK_LOADER_ID = 1;
     private String GOOGLE_BOOKS_API;
+    LoaderManager loaderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.searchButton = (Button) findViewById(R.id.search_button);
         this.progressBar = (ProgressBar) findViewById(R.id.progress_bar_view);
         this.progressBar.setVisibility(View.GONE);
         this.badResponseView = (TextView) findViewById(R.id.bad_response_textview);
-        this.badResponseView.setText("Search For Books");
 
-        ArrayList<Book> books = new ArrayList<>();
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setEmptyView(this.badResponseView);
-        this.bookAdapter = new BookAdapter(this, books);
+        this.bookAdapter = new BookAdapter(this, new ArrayList<Book>());
         listView.setAdapter(bookAdapter);
 
-        this.searchButton = (Button) findViewById(R.id.search_button);
+        loaderManager = getLoaderManager();
+        loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,13 +62,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                 progressBar.setVisibility(View.VISIBLE);
                 badResponseView.setText("");
                 bookAdapter.clear();
-                BOOK_LOADER_ID++;
                 dismissKeyboard(MainActivity.this);
-                GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes?q="
-                        + getRequestedUrl(searchResult) + "&maxResults=6";
+                MainActivity.this.GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes?q="
+                        + getRequestedUrl(searchResult) + "+terms&maxResults=6";
                 if (isNetworkAvailable(MainActivity.this)) {
-                    LoaderManager loaderManager = getLoaderManager();
-                    loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
+                    loaderManager = getLoaderManager();
+                    loaderManager.restartLoader(0, null, MainActivity.this);
                 } else {
                     badResponseView.setText("No Internet Connection");
                     progressBar.setVisibility(View.INVISIBLE);

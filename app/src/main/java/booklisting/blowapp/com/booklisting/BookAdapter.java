@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Aran on 10/19/2017.
  */
 
 public class BookAdapter extends ArrayAdapter<Book> {
-    public BookAdapter(Context context, List<Book> list) {
+    public BookAdapter(Context context, ArrayList<Book> list) {
         super(context, 0, list);
     }
 

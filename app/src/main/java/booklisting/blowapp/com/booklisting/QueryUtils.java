@@ -91,18 +91,34 @@ public class QueryUtils {
             jsonBase = new JSONObject(json);
             JSONArray booksJsonArray = jsonBase.getJSONArray("items");
             for (int i = 0; i < booksJsonArray.length(); i++) {
-                JSONObject currentItem = booksJsonArray.getJSONObject(i);
-                JSONObject volumeInfo = currentItem.getJSONObject("volumeInfo");
-                JSONArray authors = volumeInfo.getJSONArray("authors");
-                JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
-//                JSONObject previewLink = volumeInfo.getJSONObject("previewLink");
+                String thumbnail = "http://www.francoisfabie.fr/wp-content/uploads/2017/06/cuisine-grise-laquee-16-cuisine-quip-e-plan-3d-1752-x-1107.jpg";
+                String title = "title not available";
+                String author = "by unknown";
+                String date = "unknown date";
+                String description = "no descriptions";
+                String link = "";
 
-                String thumbnail = imageLinks.getString("smallThumbnail");
-                String title = volumeInfo.getString("title");
-                String author = authors.getString(0);
-                String date = volumeInfo.getString("publishedDate");
-                String description = volumeInfo.getString("description");
-                String link = volumeInfo.getString("previewLink");
+                JSONObject currentItem, volumeInfo, imageLinks;
+                JSONArray authors;
+                currentItem = booksJsonArray.getJSONObject(i);
+                volumeInfo = currentItem.getJSONObject("volumeInfo");
+
+                if (volumeInfo.has("imageLinks")) {
+                    imageLinks = volumeInfo.getJSONObject("imageLinks");
+                    thumbnail = imageLinks.optString("smallThumbnail");
+                }
+                if (volumeInfo.has("authors")) {
+                    authors = volumeInfo.getJSONArray("authors");
+                    author = authors.optString(0);
+                }
+                if (volumeInfo.has("title"))
+                    title = volumeInfo.optString("title");
+                if (volumeInfo.has("publishedDate"))
+                    date = volumeInfo.optString("publishedDate");
+                if (volumeInfo.has("description"))
+                    description = volumeInfo.optString("description");
+                if (volumeInfo.has("previewLink"))
+                    link = volumeInfo.optString("previewLink");
 
                 Book book = new Book(thumbnail, title, author, date, description, link);
                 books.add(book);
